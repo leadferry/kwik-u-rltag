@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.5.0
+ * LeadFerry Kwik-U-RLTag script v0.5.1
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -51,7 +51,7 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	};
 	
 	$scope.resetHashbang = function() {
-		$scope.tags = angular.copy(defaultTags);
+		angular.merge($scope.tags, defaultTags, {mode: $scope.tags.mode});
 	};
 	
 	$scope.$watch("tags", $scope.updateHashbang, true);
