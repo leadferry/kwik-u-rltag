@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.5.1
+ * LeadFerry Kwik-U-RLTag script v0.5.2
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -79,11 +79,25 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		$scope.urls = [{url:''}];
 	};
 	
+	$scope.addContentTerm = function($index) {
+		var url = $scope.urls[$index];
+		if(!url.content && !url.term) {
+			url.content = "custom";
+			url.term = "custom";
+		}
+	};
+	
+	$scope.removeContentTerm = function($index) {
+		var url = $scope.urls[$index];
+		url.content = null;
+		url.term = null;
+	};
+	
 	$scope.tagURLs = function(tags, urls) {
 		var taggedURLs = [];
 		if(tags.mode == "basic") {
 			angular.forEach(urls, function(url) { if(url.url) {
-				taggedURLs.push($scope.tagURL(url, {medium:"",tag:tags.medium}, {tag:tags.source}));
+				taggedURLs.push($scope.tagURL({url:url.url}, {medium:"",tag:tags.medium}, {tag:tags.source}));
 			}});
 		} else {
 			angular.forEach(urls, function(url) { if(url.url) {
