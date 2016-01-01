@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.4.0
+ * LeadFerry Kwik-U-RLTag script v0.5.0
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -12,7 +12,10 @@ urltagApp.config(['$locationProvider', function($locationProvider) {
 
 urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function ($scope, $location, $filter) {
 	var urlParser = $("#urlParser")[0], defaultTags = {
+		mode: "basic",
 		campaign: '',
+		medium: '',
+		source: '',
 		media: [
 			{medium: "Social", tag: "social", enabled: true, sources: [
 				{source: "Facebook", tag: "facebook", enabled: true},
@@ -35,7 +38,8 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		content: '',
 		term: ''
 	}, initTags = $location.path();
-	$scope.tags = (initTags.length > 1) ? JSON.parse(LZString.decompressFromEncodedURIComponent(initTags.substring(1))) : angular.copy(defaultTags);
+	//TODO: add semver to "defaultTags" to improve merging in future versions
+	$scope.tags = (initTags.length > 1) ? angular.merge({},defaultTags,JSON.parse(LZString.decompressFromEncodedURIComponent(initTags.substring(1)))) : angular.copy(defaultTags);
 	$scope.urls = [{url:''}];
 	$scope.taggedURLs = [];
 	$scope.headers = ["URL","Campaign","Medium","Source","Content","Term"];
@@ -77,13 +81,19 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	
 	$scope.tagURLs = function(tags, urls) {
 		var taggedURLs = [];
-		angular.forEach(urls, function(url) { if(url.url) {
-			angular.forEach(tags.media, function(medium) { if(medium.enabled) {
-				angular.forEach(medium.sources, function(source) { if(source.enabled) {
-					taggedURLs.push($scope.tagURL(url, medium, source));
+		if(tags.mode == "basic") {
+			angular.forEach(urls, function(url) { if(url.url) {
+				taggedURLs.push($scope.tagURL(url, {medium:"",tag:tags.medium}, {tag:tags.source}));
+			}});
+		} else {
+			angular.forEach(urls, function(url) { if(url.url) {
+				angular.forEach(tags.media, function(medium) { if(medium.enabled && medium.tag) {
+					angular.forEach(medium.sources, function(source) { if(source.enabled && source.tag) {
+						taggedURLs.push($scope.tagURL(url, medium, source));
+					}})
 				}})
-			}})
-		}});
+			}});
+		}
 		return taggedURLs;
 	};
 	
