@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.5.2
+ * LeadFerry Kwik-U-RLTag script v0.5.3
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -42,7 +42,10 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	$scope.tags = (initTags.length > 1) ? angular.merge({},defaultTags,JSON.parse(LZString.decompressFromEncodedURIComponent(initTags.substring(1)))) : angular.copy(defaultTags);
 	$scope.urls = [{url:''}];
 	$scope.taggedURLs = [];
-	$scope.headers = ["URL","Campaign","Medium","Source","Content","Term"];
+	$scope.headers = {
+		"basic": ["URL"],
+		"advanced": ["URL","Campaign","Medium","Source","Content","Term"]
+	};
 	$scope.sortBy = "url";
 	$scope.sortDesc = false;
 	
@@ -147,7 +150,7 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	}, true);
 	
 	$scope.sortOrder = function(sortByIndex) {
-		var sortBy = $filter("lowercase")($scope.headers[sortByIndex]);
+		var sortBy = $filter("lowercase")($scope.headers[$scope.tags.mode][sortByIndex]);
 		if($scope.sortBy == sortBy) {
 			$scope.sortDesc = !$scope.sortDesc;
 		} else {

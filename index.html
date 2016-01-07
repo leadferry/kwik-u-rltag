@@ -135,7 +135,7 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th ng-repeat="header in headers">
+							<th ng-repeat="header in headers[tags.mode]">
 								<a ng-click="sortOrder($index)">{{header}}
 									<span ng-show="sortBy=='{{header|lowercase}}'" ng-class="{'dropup': !sortDesc, 'dropdown': sortDesc}"><span class="caret"></span></span>
 								</a>
@@ -144,7 +144,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="taggedURL in taggedURLs | orderBy:sortBy:sortDesc">
-							<td ng-repeat="header in headers">{{taggedURL[(header|lowercase)]}}</td>
+							<td ng-repeat="header in headers[tags.mode]">{{taggedURL[(header|lowercase)]}}</td>
 						</tr>
 					</tbody>
 				</table>
