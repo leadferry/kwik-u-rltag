@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.5.3
+ * LeadFerry Kwik-U-RLTag script v0.6.0
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -40,14 +40,14 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	}, initTags = $location.path();
 	//TODO: add semver to "defaultTags" to improve merging in future versions
 	$scope.tags = (initTags.length > 1) ? angular.merge({},defaultTags,JSON.parse(LZString.decompressFromEncodedURIComponent(initTags.substring(1)))) : angular.copy(defaultTags);
-	$scope.urls = [{url:''}];
-	$scope.taggedURLs = [];
-	$scope.headers = {
+	$scope.urls = {rawURLs: [''], customTags: [{}]};
+	$scope.taggedURLs = {urls: [], headers: {
 		"basic": ["URL"],
 		"advanced": ["URL","Campaign","Medium","Source","Content","Term"]
-	};
-	$scope.sortBy = "url";
-	$scope.sortDesc = false;
+	}, sort: {
+		by: "campaign",
+		descending: false
+	}};
 	
 	$scope.updateHashbang = function(newVal, oldVal) {
 		$location.path(LZString.compressToEncodedURIComponent(JSON.stringify(newVal || $scope.tags)));
@@ -71,42 +71,45 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	};
 	
 	$scope.addURL = function() {
-		$scope.urls.push({url:''});
+		$scope.urls.rawURLs.push('');
+		$scope.urls.customTags.push({});
 	};
 	
 	$scope.removeURL = function($index) {
-		$scope.urls.splice($index, 1);
+		$scope.urls.rawURLs.splice($index, 1);
+		$scope.urls.customTags.splice($index, 1);
 	};
 	
 	$scope.resetURLs = function() {
-		$scope.urls = [{url:''}];
+		$scope.urls.rawURLs = [''];
+		$scope.urls.customTags = [{}];
 	};
 	
 	$scope.addContentTerm = function($index) {
-		var url = $scope.urls[$index];
-		if(!url.content && !url.term) {
-			url.content = "custom";
-			url.term = "custom";
+		var tags = $scope.urls.customTags[$index];
+		if(!tags.content && !tags.term) {
+			tags.content = "custom";
+			tags.term = "custom";
 		}
 	};
 	
 	$scope.removeContentTerm = function($index) {
-		var url = $scope.urls[$index];
-		url.content = null;
-		url.term = null;
+		var tags = $scope.urls.customTags[$index];
+		tags.content = null;
+		tags.term = null;
 	};
 	
-	$scope.tagURLs = function(tags, urls) {
+	$scope.tagURLs = function(tags, urls, customTags) {
 		var taggedURLs = [];
 		if(tags.mode == "basic") {
-			angular.forEach(urls, function(url) { if(url.url) {
-				taggedURLs.push($scope.tagURL({url:url.url}, {medium:"",tag:tags.medium}, {tag:tags.source}));
+			angular.forEach(urls, function(url) { if(url) {
+				taggedURLs.push($scope.tagURL({url:url}, {medium:"",tag:tags.medium}, {tag:tags.source}));
 			}});
 		} else {
-			angular.forEach(urls, function(url) { if(url.url) {
+			angular.forEach(urls, function(url, index) { if(url) {
 				angular.forEach(tags.media, function(medium) { if(medium.enabled && medium.tag) {
 					angular.forEach(medium.sources, function(source) { if(source.enabled && source.tag) {
-						taggedURLs.push($scope.tagURL(url, medium, source));
+						taggedURLs.push($scope.tagURL(angular.merge({url:url}, customTags[index]), medium, source));
 					}})
 				}})
 			}});
@@ -142,19 +145,19 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	};
 	
 	$scope.$watch("tags", function(newVal, oldVal) {
-		$scope.taggedURLs = $scope.tagURLs($scope.tags, $scope.urls);
+		$scope.taggedURLs.urls = $scope.tagURLs($scope.tags, $scope.urls.rawURLs, $scope.urls.customTags);
 	}, true);
 	
 	$scope.$watch("urls", function(newVal, oldVal) {
-		$scope.taggedURLs = $scope.tagURLs($scope.tags, $scope.urls);
+		$scope.taggedURLs.urls = $scope.tagURLs($scope.tags, $scope.urls.rawURLs, $scope.urls.customTags);
 	}, true);
 	
 	$scope.sortOrder = function(sortByIndex) {
-		var sortBy = $filter("lowercase")($scope.headers[$scope.tags.mode][sortByIndex]);
-		if($scope.sortBy == sortBy) {
-			$scope.sortDesc = !$scope.sortDesc;
+		var sortBy = $filter("lowercase")($scope.taggedURLs.headers[$scope.tags.mode][sortByIndex]);
+		if($scope.taggedURLs.sort.by == sortBy) {
+			$scope.taggedURLs.sort.descending = !$scope.taggedURLs.sort.descending;
 		} else {
-			$scope.sortBy = sortBy;
+			$scope.taggedURLs.sort.by = sortBy;
 		}
 	};
 }]);
