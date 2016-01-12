@@ -19,8 +19,26 @@
 			<div class="row">
 				<h1>LeadFerry Kwik-U-RLTag
 					<span>
-						<button class="btn btn-sm" type="reset" ng-click="resetURLs()">Reset URLs</button>
-						<button class="btn btn-sm" type="reset" ng-click="resetHashbang()">Reset Tags</button>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default" ng-click="resetAll()">Reset</button>
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a ng-click="resetTags()">Reset Tags</a></li>
+								<li><a ng-click="resetURLs()">Reset URLs</a></li>
+							</ul>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default" ng-click="saveAll()">Save</button>
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a ng-click="saveTags()">Save Tags as template</a></li>
+								<li><a ng-click="saveURLs()">Save URLs as template</a></li>
+							</ul>
+						</div>
 					</span>
 				</h1>
 			</div>

@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.6.0
+ * LeadFerry Kwik-U-RLTag script v0.7.0
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -11,7 +11,8 @@ urltagApp.config(['$locationProvider', function($locationProvider) {
 }]);
 
 urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function ($scope, $location, $filter) {
-	var urlParser = $("#urlParser")[0], defaultTags = {
+	var urlParser = $("#urlParser")[0],
+	initTags = {
 		mode: "basic",
 		campaign: '',
 		medium: '',
@@ -37,10 +38,19 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		],
 		content: '',
 		term: ''
-	}, initTags = $location.path();
-	//TODO: add semver to "defaultTags" to improve merging in future versions
-	$scope.tags = (initTags.length > 1) ? angular.merge({},defaultTags,JSON.parse(LZString.decompressFromEncodedURIComponent(initTags.substring(1)))) : angular.copy(defaultTags);
-	$scope.urls = {rawURLs: [''], customTags: [{}]};
+	},
+	initURLs = {rawURLs: [''], customTags: [{}]},
+	initData = $location.path();
+	
+	//TODO: add semver to "initData" to improve merging in future versions
+	if(initData.length > 1) {
+		initData = JSON.parse(LZString.decompressFromEncodedURIComponent(initData.substring(1)));
+		$scope.tags = angular.merge({}, initTags, initData.tags);
+		$scope.urls = angular.merge({}, initURLs, initData.urls);
+	} else {
+		$scope.tags = angular.copy(initTags);
+		$scope.urls = angular.copy(initURLs);
+	}
 	$scope.taggedURLs = {urls: [], headers: {
 		"basic": ["URL"],
 		"advanced": ["URL","Campaign","Medium","Source","Content","Term"]
@@ -49,15 +59,20 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		descending: false
 	}};
 	
-	$scope.updateHashbang = function(newVal, oldVal) {
-		$location.path(LZString.compressToEncodedURIComponent(JSON.stringify(newVal || $scope.tags)));
+	$scope.resetAll = function(tags, urls) {
+		var reset = (angular.isDefined(tags) || angular.isDefined(urls)) ? true : confirm("Are you sure you want to reset everything?");
+		//TODO: if reset all, should hashbang be reset?
+		if(reset) {
+			$scope.resetTags();
+			$scope.resetURLs();
+		}
 	};
 	
-	$scope.resetHashbang = function() {
-		angular.merge($scope.tags, defaultTags, {mode: $scope.tags.mode});
+	$scope.saveAll = function(tags, urls) {
+		tags = angular.isDefined(tags) ? tags : $scope.tags;
+		urls = angular.isDefined(urls) ? urls : $scope.urls;
+		$location.path(LZString.compressToEncodedURIComponent(JSON.stringify({tags: tags, urls: urls})));
 	};
-	
-	$scope.$watch("tags", $scope.updateHashbang, true);
 	
 	$scope.toggleAllMediumSource = function(toggle) {
 		angular.forEach($scope.tags.media, function(medium) {
@@ -70,6 +85,14 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		});
 	};
 	
+	$scope.resetTags = function() {
+		angular.merge($scope.tags, initTags, {mode: $scope.tags.mode});
+	};
+	
+	$scope.saveTags = function() {
+		$scope.saveAll($scope.tags, {});
+	};
+	
 	$scope.addURL = function() {
 		$scope.urls.rawURLs.push('');
 		$scope.urls.customTags.push({});
@@ -80,12 +103,10 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		$scope.urls.customTags.splice($index, 1);
 	};
 	
-	$scope.resetURLs = function() {
-		$scope.urls.rawURLs = [''];
-		$scope.urls.customTags = [{}];
-	};
-	
 	$scope.addContentTerm = function($index) {
+		for(i=$scope.urls.customTags.length; i <= $index; i++) {
+			$scope.urls.customTags.push({});
+		}
 		var tags = $scope.urls.customTags[$index];
 		if(!tags.content && !tags.term) {
 			tags.content = "custom";
@@ -95,8 +116,18 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	
 	$scope.removeContentTerm = function($index) {
 		var tags = $scope.urls.customTags[$index];
-		tags.content = null;
-		tags.term = null;
+		if(angular.isDefined(tags)) {
+			tags.content = null;
+			tags.term = null;
+		}
+	};
+	
+	$scope.saveURLs = function() {
+		$scope.saveAll({}, $scope.urls);
+	};
+	
+	$scope.resetURLs = function() {
+		$scope.urls = angular.copy(initURLs);
 	};
 	
 	$scope.tagURLs = function(tags, urls, customTags) {
