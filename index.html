@@ -4,48 +4,87 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 		<link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+		<link href="kwik-u-rltag.css" rel="stylesheet">
 		<script src="vendor/jquery/dist/jquery.min.js"></script>
 		<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="vendor/angularjs/angular.min.js"></script>
 		<script src="vendor/lz-string/libs/lz-string.min.js"></script>
 		<script src="kwik-u-rltag.js"></script>
 		<title>Kwik-U-RLTag</title>
-		<style type="text/css">.nav-tabs { margin-bottom: 10px; }</style>
 	</head>
 	<body ng-controller="URLTagCtrl">
-		<a href="" id="urlParser" style="display:none;"></a>
-		<div class="container-fluid">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<div class="btn-group navbar-btn pull-right">
+						<button type="button" class="btn btn-primary" ng-click="saveAll()">Save</button>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a ng-click="saveAll()">Save All</a></li>
+							<li><a ng-click="saveTags()">Save Tags as template</a></li>
+							<li><a ng-click="saveURLs()">Save URLs as template</a></li>
+						</ul>
+					</div>
+					<div class="btn-group navbar-btn pull-right">
+						<button type="button" class="btn btn-danger" ng-click="resetAll()">Reset</button>
+						<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a ng-click="resetAll()">Reset All</a></li>
+							<li><a ng-click="resetTags()">Reset Tags</a></li>
+							<li><a ng-click="resetURLs()">Reset URLs</a></li>
+						</ul>
+					</div>
+					<a class="navbar-brand" href="/"><img alt="LeadFerry" src="logo.svg"></a>
+				</div>
+			</div>
+		</nav>
+		<div class="modal fade" id="modalSave" tabindex="-1" role="dialog" aria-labelledby="modalSaveTitle">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="modalSaveTitle">{{modalSaveTitle}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-8 col-xs-12 text-center">Your location bar has been updated. Please bookmark this location to save the changes.</div>
+							<div class="col-sm-4 col-xs-12"><a type="button" ng-click="addBookmark()" class="btn btn-primary col-xs-12" rel="sidebar" title="LeadFerry Kwik-U-RLTag" ng-href="{{bookmarkURL()}}"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Bookmark</a></div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 divider">
+								<span class="badge">or</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-8 col-xs-12 text-center">Copy the link below to share, email, or keep a record of the values.</div>
+							<div class="col-sm-8 col-xs-12"><textarea id="modalSaveURL" class="form-control col-xs-12" rows="3" readonly>{{bookmarkURL()}}</textarea></div>
+							<div class="col-sm-4 col-xs-12"><button type="button" ng-click="copyBookmark()" class="btn btn-primary col-xs-12"><span class="glyphicon glyphicon-duplicate"></span>&nbsp;Copy</button></div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
 			<div class="row">
-				<h1>LeadFerry Kwik-U-RLTag
-					<span>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default" ng-click="resetAll()">Reset</button>
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li><a ng-click="resetTags()">Reset Tags</a></li>
-								<li><a ng-click="resetURLs()">Reset URLs</a></li>
-							</ul>
-						</div>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default" ng-click="saveAll()">Save</button>
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li><a ng-click="saveTags()">Save Tags as template</a></li>
-								<li><a ng-click="saveURLs()">Save URLs as template</a></li>
-							</ul>
-						</div>
-					</span>
-				</h1>
+				<div class="jumbotron text-center">
+					<h1>Lorem ipsum dolor sit amet</h1>
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+				</div>
 			</div>
 			<form class="form-horizontal">
 				<div class="form-group">
-					<label class="col-sm-2 control-label">Mode :</label>
-					<div class="col-sm-9">
+					<label class="col-sm-1 control-label">Mode&nbsp;:</label>
+					<div class="col-sm-11">
 					<label class="radio-inline">
 						<input type="radio" name="inputModeOptions" id="inputModeBasic" ng-model="tags.mode" value="basic"> Basic
 					</label>
@@ -54,108 +93,155 @@
 					</label>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="inputCampaign" class="col-sm-2 control-label">Campaign :</label>
-					<div class="col-sm-9"><input type="text" class="form-control" id="inputCampaign" ng-model="tags.campaign"></div>
+				<div ng-if="tags.mode=='basic'" class="form-group">
+					<div class="input-group">
+						<label for="inputSource" class="control-label input-group-addon">Source</label>
+						<input type="text" class="form-control" id="inputSource" ng-model="tags.source">
+					</div>
 				</div>
 				<div ng-if="tags.mode=='basic'" class="form-group">
-					<label for="inputMedium" class="col-sm-2 control-label">Medium :</label>
-					<div class="col-sm-9"><input type="text" class="form-control" id="inputMedium" ng-model="tags.medium"></div>
+					<div class="input-group">
+						<label for="inputMedium" class="control-label input-group-addon">Medium</label>
+						<input type="text" class="form-control" id="inputMedium" ng-model="tags.medium">
+					</div>
 				</div>
-				<div ng-if="tags.mode=='basic'" class="form-group">
-					<label for="inputSource" class="col-sm-2 control-label">Source :</label>
-					<div class="col-sm-9"><input type="text" class="form-control" id="inputSource" ng-model="tags.source"></div>
-				</div>
-				<div ng-if="tags.mode=='advanced'" class="form-group">
-					<label class="col-sm-2 control-label">Medium/Source :</label>
-					<div class="col-sm-9">
-						<div class="panel panel-default"><div class="panel-body">
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" ng-repeat="medium in tags.media" ng-class="{'active': $first}"><a ng-href="#{{medium.tag}}" ng-click="$event.preventDefault()" aria-controls="{{medium.tag}}" role="tab" data-toggle="tab">{{medium.medium}}</a></li>
-							</ul>
-							<div class="tab-content">
-								<div role="tabpanel" ng-repeat="medium in tags.media" ng-class="{'active': $first}" class="tab-pane" id="{{medium.tag}}">
-									<div class="form-group">
-										<div class="col-sm-2 col-sm-offset-1 checkbox"><label><input type="checkbox" ng-model="medium.enabled">Medium :</label></div>
-										<div class="col-sm-9"><input type="text" class="form-control" id="inputMedium-{{medium.tag}}" ng-model="medium.tag" ng-readonly="!medium.enabled"></div>
-									</div>
-									<ul class="nav nav-tabs" role="tablist">
-										<li role="presentation" ng-repeat="source in medium.sources" ng-class="{'active': $first}"><a ng-href="#{{medium.tag}}-{{source.tag}}" ng-click="$event.preventDefault()" aria-controls="{{medium.tag}}-{{source.tag}}" role="tab" data-toggle="tab">{{source.source}}</a></li>
-									</ul>
-									<div class="tab-content">
-										<div role="tabpanel" ng-repeat="source in medium.sources" ng-class="{'active': $first}" class="tab-pane" id="{{medium.tag}}-{{source.tag}}">
-											<div class="form-group">
-												<div class="col-sm-2 col-sm-offset-1 checkbox"><label><input type="checkbox" ng-model="source.enabled" ng-checked="source.enabled && medium.enabled" ng-disabled="!medium.enabled">Source :</label></div>
-												<div class="col-sm-9"><input type="text" class="form-control" id="inputSource-{{source.tag}}" ng-model="source.tag" ng-readonly="!source.enabled || !medium.enabled"></div>
-											</div>
+				<div ng-if="tags.mode=='advanced'" class="panel panel-primary">
+					<div class="panel-heading"><div class="row">
+						<span class="panel-title col-sm-2 col-xs-6">Source/Medium</span>
+						<div class="col-sm-10 col-xs-6">
+							<div class="btn-toolbar pull-right" role="toolbar">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-primary" aria-label="Deselect all preset medium/source" ng-click="toggleAllMediumSource(false)">
+										<span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+									</button>
+									<button type="button" class="btn btn-primary" aria-label="Select all preset medium/source" ng-click="toggleAllMediumSource(true)">
+										<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div></div>
+					<div class="panel-body">
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" ng-repeat="medium in tags.media" ng-class="{'active': $first}">
+								<a ng-href="#{{medium.tag}}" ng-click="$event.preventDefault()" aria-controls="{{medium.tag}}" role="tab" data-toggle="tab">{{medium.medium}}</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div role="tabpanel" ng-repeat="medium in tags.media" ng-class="{'active': $first}" class="tab-pane" id="{{medium.tag}}">
+								<div class="input-group">
+									<label class="control-label input-group-addon checkbox"><input type="checkbox" ng-model="medium.enabled">Medium</label>
+									<input type="text" class="form-control" id="inputMedium-{{medium.tag}}" ng-model="medium.tag" ng-readonly="!medium.enabled">
+								</div>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" ng-repeat="source in medium.sources" ng-class="{'active': $first}">
+										<a ng-href="#{{medium.tag}}-{{source.tag}}" ng-click="$event.preventDefault()" aria-controls="{{medium.tag}}-{{source.tag}}" role="tab" data-toggle="tab">{{source.source}}</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div role="tabpanel" ng-repeat="source in medium.sources" ng-class="{'active': $first}" class="tab-pane" id="{{medium.tag}}-{{source.tag}}">
+										<div class="input-group">
+											<label class="control-label input-group-addon checkbox"><input type="checkbox" ng-model="source.enabled" ng-checked="source.enabled && medium.enabled" ng-disabled="!medium.enabled">Source</label>
+											<input type="text" class="form-control" id="inputSource-{{source.tag}}" ng-model="source.tag" ng-readonly="!source.enabled || !medium.enabled">
 										</div>
 									</div>
 								</div>
 							</div>
-						</div></div>
-					</div>
-					<div class="col-sm-1 btn-toolbar" role="toolbar">
-						<div class="btn-group-vertical" role="group">
-							<button type="button" class="btn btn-default" aria-label="Select all preset medium/source" ng-click="toggleAllMediumSource(true)">
-								<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-							</button>
-							<button type="button" class="btn btn-default" aria-label="Deselect all preset medium/source" ng-click="toggleAllMediumSource(false)">
-								<span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-							</button>
 						</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputContent" class="col-sm-2 control-label">Content :</label>
-					<div class="col-sm-9"><input type="text" class="form-control" id="inputContent" ng-model="tags.content"></div>
+					<div class="input-group">
+						<label for="inputTerm" class="control-label input-group-addon">Term</label>
+						<input type="text" class="form-control" id="inputTerm" ng-model="tags.term">
+					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputTerm" class="col-sm-2 control-label">Term :</label>
-					<div class="col-sm-9"><input type="text" class="form-control" id="inputTerm" ng-model="tags.term"></div>
+					<div class="input-group">
+						<label for="inputContent" class="control-label input-group-addon">Content</label>
+						<input type="text" class="form-control" id="inputContent" ng-model="tags.content">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<label for="inputCampaign" class="control-label input-group-addon">Campaign</label>
+						<input type="text" class="form-control" id="inputCampaign" ng-model="tags.campaign">
+					</div>
 				</div>
 				<div ng-if="tags.mode=='basic'" class="form-group">
-					<label class="col-sm-2 control-label">URL(s) :</label>
-					<div class="col-sm-9"><textarea ng-model="urls.rawURLs" ng-list="&#10;" ng-trim="false" class="form-control" rows="5"></textarea></div>
+					<div class="input-group">
+						<label for="inputURLs" class="control-label input-group-addon">URL(s)</label>
+						<textarea id="inputURLs" ng-model="urls.rawURLs" ng-list="&#10;" ng-trim="false" class="form-control" rows="5"></textarea>
+					</div>
 				</div>
-				<div ng-if="tags.mode=='advanced'" class="form-group">
-					<label class="col-sm-2 control-label">URL(s) :</label>
-					<div ng-repeat="url in urls.rawURLs track by $index">
-						<div ng-class="{'col-sm-offset-2': !$first}" class="col-sm-9">
-							<div class="input-group">
-								<input type="text" class="form-control" id="inputURL{{$index}}" ng-model="urls.rawURLs[$index]">
-								<span class="input-group-btn">
-									<button ng-if="!(urls.customTags[$index].content || urls.customTags[$index].term)" class="btn btn-default" type="button" ng-click="addContentTerm($index)">
-										<span class="glyphicon glyphicon-plus"></span><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-									</button>
-									<button ng-if="urls.customTags[$index].content || urls.customTags[$index].term" class="btn btn-default" type="button" ng-click="removeContentTerm($index)">
-										<span class="glyphicon glyphicon-minus"></span><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-									</button>
-								</span>
-							</div>
-						</div>
-						<div class="col-sm-1 btn-toolbar" role="toolbar">
-							<div class="btn-group-vertical" role="group">
-								<button ng-if="$last" type="button" class="btn btn-default" aria-label="Add another URL" ng-click="addURL()">
+				<div ng-if="tags.mode=='advanced'" class="panel panel-primary">
+					<div class="panel-heading">
+						<span class="panel-title">URL(s)</span>
+					</div>
+					<div class="panel-body">
+						<div class="row" ng-repeat="url in urls.rawURLs track by $index">
+							<div class="col-xs-10 col-sm-11"><div class="row">
+								<div ng-class="{'col-md-6': (urls.customTags[$index].content || urls.customTags[$index].term), 'col-md-12': !(urls.customTags[$index].content || urls.customTags[$index].term)}">
+									<div class="input-group">
+										<input type="text" class="form-control" id="inputURL{{$index}}" ng-model="urls.rawURLs[$index]">
+										<span class="input-group-btn">
+											<button ng-if="!(urls.customTags[$index].content || urls.customTags[$index].term)" class="btn btn-default" type="button" ng-click="addContentTerm($index)">
+												<span class="glyphicon glyphicon-plus"></span><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+											</button>
+											<button ng-if="urls.customTags[$index].content || urls.customTags[$index].term" class="btn btn-default" type="button" ng-click="removeContentTerm($index)">
+												<span class="glyphicon glyphicon-minus"></span><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+											</button>
+										</span>
+									</div>
+								</div>
+								<div ng-if="(urls.customTags[$index].content || urls.customTags[$index].term)" class="col-md-6"><div class="row">
+									<div class="col-sm-6">
+										<div class="input-group">
+											<label for="inputContent-{{$index}}" class="control-label input-group-addon">Content</label>
+											<input type="text" class="form-control" id="inputContent-{{$index}}" ng-model="urls.customTags[$index].content">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<label for="inputTerm-{{$index}}" class="control-label input-group-addon">Term</label>
+											<input type="text" class="form-control" id="inputTerm-{{$index}}" ng-model="urls.customTags[$index].term">
+										</div>
+									</div>
+								</div></div>
+							</div></div>
+							<div class="col-xs-2 col-sm-1">
+								<button ng-if="$last" type="button" class="btn btn-primary pull-right" aria-label="Add another URL" ng-click="addURL()">
 									<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
 								</button>
-								<button ng-if="!$last" type="button" class="btn btn-default" aria-label="Remove this URL" ng-click="removeURL($index)">
+								<button ng-if="!$last" type="button" class="btn btn-danger pull-right" aria-label="Remove this URL" ng-click="removeURL($index)">
 									<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
 								</button>
 							</div>
 						</div>
-						<div ng-if="(urls.customTags[$index].content || urls.customTags[$index].term)" class="col-sm-offset-2 col-sm-9"><div class="row">
-							<label for="inputContent-{{$index}}" class="col-sm-2 control-label">Content :</label>
-							<div class="col-sm-4"><input type="text" class="form-control" id="inputContent-{{$index}}" ng-model="urls.customTags[$index].content"></div>
-							<label for="inputTerm-{{$index}}" class="col-sm-2 control-label">Term :</label>
-							<div class="col-sm-4"><input type="text" class="form-control" id="inputTerm-{{$index}}" ng-model="urls.customTags[$index].term"></div>
-						</div></div>
 					</div>
 				</div>
 			</form>
-			<div class="row"><div class="col-sm-offset-1 col-sm-10 table-responsive">
+			<div class="row"><div class="col-sm-12 table-responsive">
 				<table class="table table-hover">
 					<thead>
 						<tr>
+							<th colspan="{{1+taggedURLs.headers[tags.mode].length}}">
+								<button type="button" id="buttonCopy" class="btn btn-default" ng-click="copy()" ng-disabled="taggedURLs.urls.length==0 || (taggedURLs.selectAll==false && taggedURLs.selectSome==false)">
+									<span class="glyphicon glyphicon-duplicate"></span>
+									<span>Copy&nbsp;Selected</span>
+								</button>
+								<div class="popover alert-danger" role="tooltip">
+									<div class="arrow"></div>
+									<div class="popover-content"></div>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th width="50">
+								<div class="checkbox">
+									<label><input type="checkbox" ng-model="taggedURLs.selectAll" ng-indeterminate="taggedURLs.selectSome" ng-change="selectAllToggle()"></label>
+								</div>
+							</th>
 							<th ng-repeat="header in taggedURLs.headers[tags.mode]">
 								<a ng-click="sortOrder($index)">{{header}}
 									<span ng-show="taggedURLs.sort.by=='{{header|lowercase}}'" ng-class="{'dropup': !taggedURLs.sort.descending, 'dropdown': taggedURLs.sort.descending}"><span class="caret"></span></span>
@@ -165,12 +251,58 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="taggedURL in taggedURLs.urls | orderBy:taggedURLs.sort.by:taggedURLs.sort.descending">
+							<td width="50"><div class="checkbox"><label><input type="checkbox" ng-model="taggedURL.copy"></label></div></td>
 							<td ng-repeat="header in taggedURLs.headers[tags.mode]">{{taggedURL[(header|lowercase)]}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div></div>
 		</div>
+		<div class="container-fluid">
+			<ul class="row faq" ng-init="docs = [
+				{header: 'Lorem ipsum dolor sit amet', paragraphs: [
+					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				]},
+				{header: 'consectetuer adipiscing elit', paragraphs: [
+					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				]},
+				{header: 'sed diam nonummy nibh euismod', paragraphs: [
+					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				]},
+				{header: 'Lorem ipsum dolor sit amet', paragraphs: [
+					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				]},
+				{header: 'consectetuer adipiscing elit', paragraphs: [
+					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				]}
+			]">
+				<li class="col-md-4 col-sm-6 col-xs-12 pull-left" ng-repeat="doc in docs">
+					<h2>{{doc.header}}</h2>
+					<p ng-repeat="para in doc.paragraphs">{{para}}</p>
+				</li>
+			</ul>
+		</div>
+		<footer class="container-fluid">
+			<div class="row copyright">
+				<div class="col-sm-3 text-left">
+					<p>Follow Us
+						<i class="fa fa-twitter-square"></i>
+						<i class="fa fa-facebook-square"></i>
+						<i class="fa fa-linkedin-square"></i>
+						<i class="fa fa-google-plus-square"></i>
+					</p>
+				</div>
+				<div class="col-sm-6 text-center">
+					<p>Copyright &copy; 2015-2016 <a href="//leadferry.com/">LeadFerry Technologies LLP</a>. All rights reserved.</p>
+				</div>
+				<div class="col-sm-3 text-right">
+					<div class="row">
+						<p class="col-md-6">Terms Of Service</p>
+						<p class="col-md-6">Privacy Policy</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<a href="" id="urlParser" style="display:none;"></a>
 	</body>
 </html>
-

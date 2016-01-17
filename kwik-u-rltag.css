@@ -1,0 +1,218 @@
+/**
+ * LeadFerry Kwik-U-RLTag styles v0.8.0
+ */
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	padding-top: 80px;
+	margin-bottom: 80px;
+}
+body > footer {
+	position: absolute;
+	border-top: 8px solid #AEB7B4;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 80px;
+	background-color: #24AB88;
+}
+body > footer * {
+	color: #FFF;
+}
+@media only screen and (max-width: 767px) {
+body {
+	margin-bottom: inherit;
+}
+body > footer {
+	position: inherit;
+	height: inherit;
+}
+}
+.navbar-header {
+	min-width: 100%;
+}
+.navbar-brand {
+	margin-top: -7.5px;
+}
+@media only screen and (max-width: 479px) {
+.navbar-brand {
+	width: 56px;
+	overflow: hidden;
+}
+}
+.navbar-btn.pull-right {
+	margin-left: 8px;
+}
+.modal .divider {
+	border-bottom: 2px dashed #F5F5F5;
+	margin-top: 30px;
+	margin-bottom: 45px;
+	height: 15px;
+	text-align: center;
+}
+.modal .badge {
+	font-size: 14px;
+	color: #7A7A7A;
+	background-color: #F5F5F5;
+}
+.control-label.input-group-addon {
+    min-width: 105px;
+    background-color: #FFF;
+    color: #777;
+}
+@media only screen and (max-width: 767px) {
+.control-label.input-group-addon {
+    padding-right: 0px;
+}
+}
+.panel {
+	margin: 0px -15px 15px -15px;
+}
+.panel-title {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	font-size: inherit;
+}
+.nav-tabs {
+	margin-bottom: 15px;
+}
+.tab-pane .input-group {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.tab-pane .input-group,
+.panel-body > .row {
+	margin-bottom: 15px;
+}
+.input-group-btn .btn-group > .btn {
+	float: none;
+}
+#buttonCopy {
+	margin-left: -8px;
+}
+#buttonCopy + .popover {
+	z-index: 900;
+}
+@media (min-width: 480px) {
+#buttonCopy + .popover {
+	top: 4px;
+	left: 169px; /* for bootstrap font-size(14px), left: 151px;*/
+	margin-left: 10px;
+}
+#buttonCopy + .popover > .arrow {
+	top: 50%;
+	left: -11px;
+	margin-top: -11px;
+	border-right-color: rgba(0, 0, 0, 0.25);
+	border-left-width: 0px;
+}
+#buttonCopy + .popover > .arrow::after {
+	bottom: -10px;
+	left: 1px;
+	content: " ";
+	border-right-color: #FFF;
+	border-left-width: 0px;
+}
+#buttonCopy + .popover.alert-success > .arrow::after {
+	border-right-color: #DFF0D8;
+}
+#buttonCopy + .popover.alert-danger > .arrow::after {
+	border-right-color: #F2DEDE;
+}
+}
+@media (max-width: 479px) {
+#buttonCopy + .popover {
+	top: 48px; /* for bootstrap font-size(14px), top: 42px;*/
+	left: 0px;
+	margin-top: 10px;
+}
+#buttonCopy + .popover > .arrow {
+	top: -11px;
+	left: 50%;
+	margin-left: -11px;
+	border-bottom-color: rgba(0, 0, 0, 0.25);
+	border-top-width: 0px;
+}
+#buttonCopy + .popover > .arrow::after {
+	left: -10px;
+	top: 1px;
+	content: " ";
+	border-bottom-color: #FFF;
+	border-top-width: 0px;
+}
+#buttonCopy + .popover.alert-success > .arrow::after {
+	border-bottom-color: #DFF0D8;
+}
+#buttonCopy + .popover.alert-danger > .arrow::after {
+	border-bottom-color: #F2DEDE;
+}
+}
+.popover.alert-success {
+	background-color: #DFF0D8;
+}
+.popover.alert-success.top > .arrow::after {
+	border-top-color: #DFF0D8;
+}
+.popover.alert-success.right > .arrow::after {
+	border-right-color: #DFF0D8;
+}
+.popover.alert-success.bottom > .arrow::after {
+	border-bottom-color: #DFF0D8;
+}
+.popover.alert-success.left > .arrow::after {
+	border-left-color: #DFF0D8;
+}
+.popover.alert-danger {
+	background-color: #F2DEDE;
+}
+.popover.alert-danger.top > .arrow::after {
+	border-top-color: #F2DEDE;
+}
+.popover.alert-danger.right > .arrow::after {
+	border-right-color: #F2DEDE;
+}
+.popover.alert-danger.bottom > .arrow::after {
+	border-bottom-color: #F2DEDE;
+}
+.popover.alert-danger.left > .arrow::after {
+	border-left-color: #F2DEDE;
+}
+tr .checkbox {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+tr .checkbox label {
+	min-height: 16px;
+}
+.dropdown, .dropup {
+	position: absolute;
+}
+.faq {
+	background-color: #F5F5F5;
+}
+ul.faq {
+	list-style-type: none;
+	margin-bottom: 0px;
+}
+.copyright {
+	font-size: 66%;
+	text-transform: uppercase;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+}
+.copyright .fa {
+	font-size: 20px;
+	margin: 0px 2px;
+}
+@media only screen and (max-width: 767px) {
+.copyright {
+	position: inherit;
+}
+.copyright .text-left,
+.copyright .text-right {
+	text-align: center;
+}
+}

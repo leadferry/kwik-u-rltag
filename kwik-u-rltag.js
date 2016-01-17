@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.7.0
+ * LeadFerry Kwik-U-RLTag script v0.8.0
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -10,7 +10,8 @@ urltagApp.config(['$locationProvider', function($locationProvider) {
 	$locationProvider.html5Mode(false).hashPrefix('!');
 }]);
 
-urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function ($scope, $location, $filter) {
+urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter',
+function ($scope, $location, $filter) {
 	var urlParser = $("#urlParser")[0],
 	initTags = {
 		mode: "basic",
@@ -51,7 +52,8 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		$scope.tags = angular.copy(initTags);
 		$scope.urls = angular.copy(initURLs);
 	}
-	$scope.taggedURLs = {urls: [], headers: {
+	$scope.taggedURLs = {urls: [], selectAll: true, selectSome: false,
+	headers: {
 		"basic": ["URL"],
 		"advanced": ["URL","Campaign","Medium","Source","Content","Term"]
 	}, sort: {
@@ -68,10 +70,37 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 		}
 	};
 	
-	$scope.saveAll = function(tags, urls) {
+	$scope.saveAll = function(tags, urls, title) {
 		tags = angular.isDefined(tags) ? tags : $scope.tags;
 		urls = angular.isDefined(urls) ? urls : $scope.urls;
 		$location.path(LZString.compressToEncodedURIComponent(JSON.stringify({tags: tags, urls: urls})));
+		$scope.modalSaveTitle = title || "Save All";
+		$("#modalSave").modal('show');
+	};
+	
+	$scope.bookmarkURL = function() {
+		return $location.absUrl();
+	};
+	
+	$scope.addBookmark = function() {
+		//NOTE: Credits to https://gist.github.com/oilvier/70abd45d1f2ffc98b568
+		if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox < 23
+			window.sidebar.addPanel(document.title,window.location.href,'');
+		} else if(window.sidebar && ! (window.sidebar instanceof Node)) { // Mozilla Firefox >= 23
+			return true;
+		} else if(window.external && ('AddFavorite' in window.external)) { // Internet Explorer
+			window.external.AddFavorite(location.href,document.title);
+		} else if(window.opera && window.print) { // Opera < 15
+			return true;
+		} else { // WebKit - Safari/Chrome
+			alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+		}
+		return false;
+	};
+	
+	$scope.copyBookmark = function() {
+		$("#modalSaveURL").select();
+		document.execCommand("copy");
 	};
 	
 	$scope.toggleAllMediumSource = function(toggle) {
@@ -90,7 +119,7 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	};
 	
 	$scope.saveTags = function() {
-		$scope.saveAll($scope.tags, {});
+		$scope.saveAll($scope.tags, {}, "Save Tags");
 	};
 	
 	$scope.addURL = function() {
@@ -123,7 +152,7 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 	};
 	
 	$scope.saveURLs = function() {
-		$scope.saveAll({}, $scope.urls);
+		$scope.saveAll({}, $scope.urls, "Save URLs");
 	};
 	
 	$scope.resetURLs = function() {
@@ -172,6 +201,7 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 			urlParser.search = params.join('&');
 		}
 		ret["url"] = urlParser.href;
+		ret["copy"] = $scope.taggedURLs.selectAll;
 		return ret;
 	};
 	
@@ -191,5 +221,68 @@ urltagApp.controller("URLTagCtrl", ['$scope', '$location', '$filter', function (
 			$scope.taggedURLs.sort.by = sortBy;
 		}
 	};
+	
+	$scope.selectAllToggle = function() {
+		angular.forEach($scope.taggedURLs.urls, function(taggedURL) {
+			taggedURL.copy = $scope.taggedURLs.selectAll;
+		});
+	};
+	
+	$scope.$watch("taggedURLs.urls", function(newVal, oldVal) {
+		var selected=0, unselected=0;
+		angular.forEach(newVal, function(taggedURL) {
+			if(taggedURL.copy==true) {
+				selected++;
+			} else {
+				unselected++;
+			}
+		});
+		if(selected > 0 && unselected > 0) {
+			$scope.taggedURLs.selectSome = true;
+		} else {
+			if(selected == newVal.length) {
+				$scope.taggedURLs.selectAll = true;
+			} else if(unselected == newVal.length) {
+				$scope.taggedURLs.selectAll = false;
+			}
+			$scope.taggedURLs.selectSome = false;
+		}
+	}, true);
+	
+	$scope.copy = function(index) {
+		var text = '', nURLs = 0;
+		if(!angular.isDefined(index)) {
+			var urls = $filter("orderBy")($scope.taggedURLs.urls, $scope.taggedURLs.sort.by, $scope.taggedURLs.sort.descending);
+			angular.forEach(urls, function(taggedURL) {
+				if(taggedURL.copy) {
+					text += taggedURL["url"] + '\n';
+					nURLs++;
+				}
+			})
+		} else {
+			text = $scope.taggedURLs.urls[index]["url"];
+		}
+		var copyPad = $("<textarea>");
+		$("body").append(copyPad);
+		copyPad.val(text).select();
+		var copySuccess = document.execCommand("copy");
+		copyPad.remove();
+		var tooltipAlert = $("#buttonCopy + .popover");
+		tooltipAlert.toggleClass("alert-success", copySuccess);
+		tooltipAlert.toggleClass("alert-danger", !copySuccess);
+		tooltipAlert.find(".popover-content").text(copySuccess ? nURLs + " URL(s) copied to clipboard" : "Failed to copy URL(s) to clipboard");
+		tooltipAlert.fadeIn(function() { $(this).delay(copySuccess ? 1000 : 2000).fadeOut(); });
+		return copySuccess;
+	};
 }]);
 
+urltagApp.directive('ngIndeterminate', function($compile) {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attributes) {
+			scope.$watch(attributes['ngIndeterminate'], function (value) {
+				element.prop('indeterminate', !!value);
+			});
+		}
+	};
+});
