@@ -123,12 +123,34 @@
 					</div></div>
 					<div class="panel-body">
 						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" ng-repeat="medium in tags.media" ng-class="{'active': $first}">
+							<li role="presentation" class="active">
+								<a href="#custom_medium" ng-click="$event.preventDefault()" aria-controls="custom_medium" role="tab" data-toggle="tab">Custom</a>
+							</li>
+							<li role="presentation" ng-repeat="medium in tags.media">
 								<a ng-href="#{{medium.tag}}" ng-click="$event.preventDefault()" aria-controls="{{medium.tag}}" role="tab" data-toggle="tab">{{medium.medium}}</a>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" ng-repeat="medium in tags.media" ng-class="{'active': $first}" class="tab-pane" id="{{medium.tag}}">
+							<div role="tabpanel" class="active tab-pane" id="custom_medium">
+								<div class="input-group">
+									<label class="control-label input-group-addon">Medium</label>
+									<input type="text" class="form-control" id="inputMedium-custom" ng-model="tags.medium">
+								</div>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active">
+										<a href="#custom_source" ng-click="$event.preventDefault()" aria-controls="custom_source" role="tab" data-toggle="tab">Custom</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div role="tabpanel" class="active tab-pane" id="custom_source">
+										<div class="input-group">
+											<label class="control-label input-group-addon">Source</label>
+											<input type="text" class="form-control" id="inputSource-custom" ng-model="tags.source">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div role="tabpanel" ng-repeat="medium in tags.media" class="tab-pane" id="{{medium.tag}}">
 								<div class="input-group">
 									<label class="control-label input-group-addon checkbox"><input type="checkbox" ng-model="medium.enabled">Medium</label>
 									<input type="text" class="form-control" id="inputMedium-{{medium.tag}}" ng-model="medium.tag" ng-readonly="!medium.enabled">

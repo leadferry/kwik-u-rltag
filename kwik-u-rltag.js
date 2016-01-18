@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.8.0
+ * LeadFerry Kwik-U-RLTag script v0.9.0
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -24,17 +24,23 @@ function ($scope, $location, $filter) {
 				{source: "Twitter", tag: "twitter", enabled: true},
 				{source: "LinkedIn", tag: "linkedin", enabled: true},
 				{source: "Pinterest", tag: "pinterest", enabled: true},
+				{source: "Google Plus", tag: "google-plus", enabled: true}
 			]},
 			{medium: "Email", tag: "email", enabled: true, sources: [
-				{source: "MailChimp", tag: "mailchimp", enabled: true},
-				{source: "MailGun", tag: "mailgun", enabled: true}
+				{source: "Internal Newsletter", tag: "internal-newsletter", enabled: true},
+				{source: "Vendor Newsletter", tag: "vendor-name", enabled: true}
 			]},
-			{medium: "Content Marketing", tag: "content_mktg", enabled: true, sources: [
+			{medium: "Content Distribution", tag: "content-distribution", enabled: true, sources: [
 				{source: "Outbrain", tag: "outbrain", enabled: true},
-				{source: "Taboola", tag: "taboola", enabled: true}
+				{source: "Taboola", tag: "taboola", enabled: true},
+				{source: "Gravity", tag: "gravity", enabled: true},
+				{source: "Revcontent", tag: "revcontent", enabled: true}
 			]},
-			{medium: "Custom", tag: "custom_medium", enabled: false, sources: [
-				{source: "Custom", tag: "custom_source", enabled: true}
+			{medium: "Banner", tag: "banner", enabled: true, sources: [
+				{source: "AdWords", tag: "adwords", enabled: true},
+				{source: "Bing Ads", tag: "bing", enabled: true},
+				{source: "Adroll", tag: "adroll", enabled: true},
+				{source: "Perfect Audience", tag: "perfect-audience", enabled: true}
 			]}
 		],
 		content: '',
@@ -105,12 +111,10 @@ function ($scope, $location, $filter) {
 	
 	$scope.toggleAllMediumSource = function(toggle) {
 		angular.forEach($scope.tags.media, function(medium) {
-			if(medium.medium !== "Custom") {
-				medium.enabled = toggle;
-				angular.forEach(medium.sources, function(source) {
-					source.enabled = toggle;
-				})
-			}
+			medium.enabled = toggle;
+			angular.forEach(medium.sources, function(source) {
+				source.enabled = toggle;
+			});
 		});
 	};
 	
@@ -167,6 +171,9 @@ function ($scope, $location, $filter) {
 			}});
 		} else {
 			angular.forEach(urls, function(url, index) { if(url) {
+				if(tags.medium || tags.source) {
+					taggedURLs.push($scope.tagURL(angular.merge({url:url}, customTags[index]), {medium:"",tag:tags.medium}, {tag:tags.source}));
+				}
 				angular.forEach(tags.media, function(medium) { if(medium.enabled && medium.tag) {
 					angular.forEach(medium.sources, function(source) { if(source.enabled && source.tag) {
 						taggedURLs.push($scope.tagURL(angular.merge({url:url}, customTags[index]), medium, source));
