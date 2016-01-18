@@ -30,9 +30,9 @@
 							<li><a ng-click="saveURLs()">Save URLs as template</a></li>
 						</ul>
 					</div>
-					<div class="btn-group navbar-btn pull-right">
-						<button type="button" class="btn btn-danger" ng-click="resetAll()">Reset</button>
-						<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<div class="btn-group navbar-btn pull-right" ng-init="mouseoverReset=false" ng-mouseenter="mouseoverReset=true" ng-mouseleave="mouseoverReset=false">
+						<button type="button" class="btn" ng-class="{'btn-danger': mouseoverReset, 'btn-default': !mouseoverReset}" ng-click="resetAll()">Reset</button>
+						<button type="button" class="btn dropdown-toggle" ng-class="{'btn-danger': mouseoverReset, 'btn-default': !mouseoverReset}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
