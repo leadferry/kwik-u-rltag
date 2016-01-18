@@ -4,6 +4,8 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="title" content="LeadFerry Kwik-U-RLTag | Bulk UTM tagged URL Builder | Automate UTM Parameter Tagging">
+		<meta name="description" content="Use this free UTM builder to build 100s of tagged URLs instantly. Save UTM parameter values as templates and collaborate with colleagues.">
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 		<link href="bootstrap.min.css" rel="stylesheet">
@@ -13,7 +15,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 		<script src="kwik-u-rltag.js"></script>
-		<title>Kwik-U-RLTag</title>
+		<title>LeadFerry Kwik-U-RLTag | Bulk UTM tagged URL Builder</title>
 	</head>
 	<body ng-controller="URLTagCtrl">
 		<nav class="navbar navbar-default navbar-fixed-top">
@@ -54,7 +56,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-sm-8 col-xs-12 text-center">Your location bar has been updated. Please bookmark this location to save the changes.</div>
+							<div class="col-sm-8 col-xs-12 text-center">Your location bar has been updated. Please bookmark this location to retrieve the UTM tags and/or URLs you entered.</div>
 							<div class="col-sm-4 col-xs-12"><a type="button" ng-click="addBookmark()" class="btn btn-primary col-xs-12" rel="sidebar" title="LeadFerry Kwik-U-RLTag" ng-href="{{bookmarkURL()}}"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Bookmark</a></div>
 						</div>
 						<div class="row">
@@ -77,8 +79,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="jumbotron text-center">
-					<h1>Lorem ipsum dolor sit amet</h1>
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+					<h1>Kwik-U-RLTag</h1>
+					<h1><small>Bulk UTM tagged URL Builder</small></h1>
+					<p>Build 100s of URLs with UTM tags appended - instantly.</p>
+					<p>Collaborate with colleagues and stay consistent with UTM values.</p>
+					<p>New to UTM tagging? Here’s an in-depth <a href="https://leadferry.com/blog/utm-parameters/" target="_blank">UTM parameters guide.</a></p>
 				</div>
 			</div>
 			<form class="form-horizontal">
@@ -282,20 +287,20 @@
 		</div>
 		<div class="container-fluid">
 			<ul class="row faq" ng-init="docs = [
-				{header: 'Lorem ipsum dolor sit amet', paragraphs: [
-					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				{header: 'What does this UTM builder do?', paragraphs: [
+					'Adding UTM parameters to your URLs is a recommended approach for tracking campaign performance.',
+					'Manually adding UTM parameters can be tedious - especially if you have several URLs.',
+					'Our tool simplifies generating UTM tagged URLs - even if you have 100s of URLs to tag.'
 				]},
-				{header: 'consectetuer adipiscing elit', paragraphs: [
-					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				{header: 'How is this tool different from Google URL builder?', paragraphs: [
+					'Google URL builder is built for tagging one URL at a time.',
+					'With the bulk UTM builder, in addition to quick tag creation, you can also save UTM tags as templates with our “save” feature. This ensures quick and easy access every time you require tagging.',
+					'It also helps maintain consistency while tagging. Save the URL as bookmark or collaborate with your colleagues.'
 				]},
-				{header: 'sed diam nonummy nibh euismod', paragraphs: [
-					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
-				]},
-				{header: 'Lorem ipsum dolor sit amet', paragraphs: [
-					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
-				]},
-				{header: 'consectetuer adipiscing elit', paragraphs: [
-					'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+				{header: 'Do you save the data that’s entered?', paragraphs: [
+					'No, we don\'t. But you can.',
+					'The UTM tagging tool does not send the information you enter to our servers.',
+					'The save feature works using Hashbang URLs - which basically adds fragment identifiers to the location bar and are never sent to the server.'
 				]}
 			]">
 				<li class="col-md-4 col-sm-6 col-xs-12 pull-left" ng-repeat="doc in docs">
