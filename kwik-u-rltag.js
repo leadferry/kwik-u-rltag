@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag script v0.9.0
+ * LeadFerry Kwik-U-RLTag script v0.9.1
  * Contact us at support@leadferry.com if you are looking for assistance.
  * Interested in working for us? Reach out to us at N4IgpgtghglgNiAXCAVgewEYGcACcxQAmAZmAE5kCeAdAMZoQgA0IALjAA5IgDKYAdoQAEAVyxCoQuDH4BrIazQKAFjHEcoAczAqorCYULio/NK2XkFUDAqXmdAWTCEYIiAHoeaEWVo6sYLTsaPxCAO4w5gqR+EIA5AASOADCANIAzAAicRKCVprxylC0ss5xIAC+QA=
  */
@@ -61,7 +61,7 @@ function ($scope, $location, $filter) {
 	$scope.taggedURLs = {urls: [], selectAll: true, selectSome: false,
 	headers: {
 		"basic": ["URL"],
-		"advanced": ["URL","Campaign","Medium","Source","Content","Term"]
+		"advanced": ["URL","Source","Medium","Term","Content","Campaign"]
 	}, sort: {
 		by: "campaign",
 		descending: false
@@ -185,7 +185,7 @@ function ($scope, $location, $filter) {
 	};
 	
 	$scope.tagURL = function(url, medium, source) {
-		var tags = ["campaign","medium","source","content","term"], params = [], param, value, ret = {};
+		var tags = ["source","medium","term","content","campaign"], params = [], param, value, ret = {};
 		angular.forEach(tags, function(tag, index) {
 			param = "utm_"+tag+"=";
 			value = null;
