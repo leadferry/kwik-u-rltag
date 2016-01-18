@@ -1,5 +1,5 @@
 /**
- * LeadFerry Kwik-U-RLTag styles v0.8.0
+ * LeadFerry Kwik-U-RLTag styles v0.9.0
  */
 html {
 	position: relative;
@@ -56,6 +56,10 @@ body > footer {
 	font-size: 14px;
 	color: #7A7A7A;
 	background-color: #F5F5F5;
+}
+.jumbotron p {
+	margin-bottom: 5px;
+	color: #292929;
 }
 .control-label.input-group-addon {
     min-width: 105px;

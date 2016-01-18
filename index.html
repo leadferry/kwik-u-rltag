@@ -4,20 +4,20 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="title" content="LeadFerry Kwik-U-RLTag | Bulk UTM tagged URL Builder | Automate UTM Parameter Tagging">
+		<meta name="title" content="Bulk UTM Builder by LeadFerry | Automate UTM Parameter Tagging">
 		<meta name="description" content="Use this free UTM builder to build 100s of tagged URLs instantly. Save UTM parameter values as templates and collaborate with colleagues.">
-		<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-		<link href="bootstrap.min.css" rel="stylesheet">
-		<link href="kwik-u-rltag.css" rel="stylesheet">
-		<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-		<script src="kwik-u-rltag.js"></script>
-		<title>LeadFerry Kwik-U-RLTag | Bulk UTM tagged URL Builder</title>
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" type="text/css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+		<link href="bootstrap.min.css" type="text/css" rel="stylesheet">
+		<link href="kwik-u-rltag.min.css" type="text/css" rel="stylesheet">
+		<style type="text/css">[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak { display: none !important; }</style>
+		<title>Bulk UTM Builder by LeadFerry</title>
 	</head>
-	<body ng-controller="URLTagCtrl">
+	<body ng-controller="URLTagCtrl" ng-cloak>
+		<!-- Google Tag Manager -->
+		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KHV68B" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KHV68B');</script>
+		<!-- End Google Tag Manager -->
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -57,7 +57,7 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-sm-8 col-xs-12 text-center">Your location bar has been updated. Please bookmark this location to retrieve the UTM tags and/or URLs you entered.</div>
-							<div class="col-sm-4 col-xs-12"><a type="button" ng-click="addBookmark()" class="btn btn-primary col-xs-12" rel="sidebar" title="LeadFerry Kwik-U-RLTag" ng-href="{{bookmarkURL()}}"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Bookmark</a></div>
+							<div class="col-sm-4 col-xs-12"><a type="button" ng-click="addBookmark()" class="btn btn-primary col-xs-12" rel="sidebar" title="Bulk UTM Builder by LeadFerry" ng-href="{{bookmarkURL()}}"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Bookmark</a></div>
 						</div>
 						<div class="row">
 							<div class="col-xs-12 divider">
@@ -79,8 +79,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="jumbotron text-center">
-					<h1>Kwik-U-RLTag</h1>
-					<h1><small>Bulk UTM tagged URL Builder</small></h1>
+					<h1>Bulk UTM Builder</h1>
 					<p>Build 100s of URLs with UTM tags appended - instantly.</p>
 					<p>Collaborate with colleagues and stay consistent with UTM values.</p>
 					<p>New to UTM tagging? Here’s an in-depth <a href="https://leadferry.com/blog/utm-parameters/" target="_blank">UTM parameters guide.</a></p>
@@ -304,14 +303,14 @@
 				]}
 			]">
 				<li class="col-md-4 col-sm-6 col-xs-12 pull-left" ng-repeat="doc in docs">
-					<h2>{{doc.header}}</h2>
+					<h3>{{doc.header}}</h3>
 					<p ng-repeat="para in doc.paragraphs">{{para}}</p>
 				</li>
 			</ul>
 		</div>
 		<footer class="container-fluid">
 			<div class="row copyright">
-				<div class="col-sm-3 text-left">
+				<div class="col-sm-3 text-left invisible">
 					<p>Follow Us
 						<i class="fa fa-twitter-square"></i>
 						<i class="fa fa-facebook-square"></i>
@@ -322,7 +321,7 @@
 				<div class="col-sm-6 text-center">
 					<p>Copyright &copy; 2015-2016 <a href="//leadferry.com/">LeadFerry Technologies LLP</a>. All rights reserved.</p>
 				</div>
-				<div class="col-sm-3 text-right">
+				<div class="col-sm-3 text-right invisible">
 					<div class="row">
 						<p class="col-md-6">Terms Of Service</p>
 						<p class="col-md-6">Privacy Policy</p>
@@ -331,5 +330,10 @@
 			</div>
 		</footer>
 		<a href="" id="urlParser" style="display:none;"></a>
+		<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js" type="text/javascript"></script>
+		<script src="kwik-u-rltag.min.js" type="text/javascript"></script>
 	</body>
 </html>
