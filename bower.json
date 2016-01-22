@@ -6,8 +6,15 @@
     "Vimal Aravindashan <vimal.aravindashan@gmail.com>"
   ],
   "description": "LeadFerry Kwik-U-RLTag",
+  "moduleType": [],
+  "keywords": [
+    "url",
+    "utm",
+    "bulk",
+    "marketing"
+  ],
   "license": "MIT",
-  "homepage": "https://leadferry.com/kwik-u-rltag/",
+  "homepage": "https://leadferry.com/toots/kwik-u-rltag/",
   "private": true,
   "ignore": [
     "**/.*",
